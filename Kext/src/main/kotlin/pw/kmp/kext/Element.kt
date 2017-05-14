@@ -153,19 +153,12 @@ class KextElement internal constructor(val element: LocatedElement, val parent: 
  * An implementation of [Element] that delegates calls to a parent element, checking for missing data.
  * @property element the parent element
  */
-class RequiredElement internal constructor(val element: Element): Element {
-
-    override fun line() = element.line()
-    override fun name() = element.name()
-    override fun parent() = element.parent()
-    override fun children() = element.children()
+class RequiredElement internal constructor(val element: Element): Element by element {
 
     override fun child(elementName: String): Element = element.child(elementName) ?: throw NoChildrenException(element, elementName)
     override fun text(elementName: String): String = element.text(elementName) ?: throw NoContentException(element)
     override fun text(): String = element.text() ?: throw NoContentException(element)
 
     override fun attribute(attributeName: String): String = element.attribute(attributeName) ?: throw NoAttributeException(element, attributeName)
-
-    override fun toString() = element.toString()
 
 }
