@@ -21,8 +21,10 @@ import kotlin.properties.Delegates
 class Match(val id: Int, val world: World, app: Kodein, val map: Maplet) : Subscribable() {
 
     enum class State { READY, RUNNING, ENDED }
-    var state: State by Delegates.observable(State.READY) {
-        _, old, new -> notify(MatchStateEvent(old, new))
+    var state: State by Delegates.observable(State.READY) { _, old, new ->
+        if (old != new) {
+            notify(MatchStateEvent(old, new))
+        }
     }
 
     // match context
@@ -44,6 +46,7 @@ class Match(val id: Int, val world: World, app: Kodein, val map: Maplet) : Subsc
     }
 
     fun cleanup() {
+        state = State.ENDED
         ctx.instance<MatchEventDispatcher>().unregister()
     }
 
