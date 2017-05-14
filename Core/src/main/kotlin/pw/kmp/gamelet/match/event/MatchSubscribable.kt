@@ -1,7 +1,8 @@
-package pw.kmp.gamelet.match
+package pw.kmp.gamelet.match.event
 
 import pw.kmp.gamelet.event.Subscribable
 import pw.kmp.gamelet.event.TypedSubscription
+import pw.kmp.gamelet.match.Match
 import kotlin.reflect.KClass
 
 /**

@@ -7,18 +7,23 @@ import com.github.salomonbrys.kodein.instance
 import org.bukkit.World
 import pw.kmp.gamelet.listeners.MatchEventDispatcher
 import pw.kmp.gamelet.map.Maplet
+import pw.kmp.gamelet.match.event.MatchStateEvent
+import pw.kmp.gamelet.match.event.MatchSubscribable
 import pw.kmp.gamelet.modules.GameletModule
 import pw.kmp.gamelet.util.logger
 import pw.kmp.kodeinject.injectedSingleton
 import java.util.logging.Logger
+import kotlin.properties.Delegates
 
 /**
  * A match with loaded modules.
  */
 class Match(val id: Int, val world: World, app: Kodein, val map: Maplet) : MatchSubscribable() {
 
-    var state = State.READY
     enum class State { READY, RUNNING, ENDED }
+    var state: State by Delegates.observable(State.READY) {
+        _, old, new -> notify(MatchStateEvent(old, new))
+    }
 
     // match context
     val ctx = Kodein {
