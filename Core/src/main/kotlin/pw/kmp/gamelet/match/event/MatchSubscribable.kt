@@ -7,15 +7,15 @@ import kotlin.reflect.KClass
 /**
  * Subscribe to notifications of a certain type, when the match is a specified state.
  */
-inline fun <reified T : Any> Match.subscribe(vararg states: Match.State, noinline notifier: T.() -> Unit) {
-    subscribe(StatefulTypedSubscription(this, states as Array<Match.State>, T::class, notifier, 0))
+inline fun <reified T : Any> Match.subscribe(states: Array<Match.State>, noinline notifier: T.() -> Unit) {
+    subscribe(StatefulTypedSubscription(this, states, T::class, notifier, 0))
 }
 
 /**
  * Subscribe to notifications of a certain type, specifying a priority.
  */
-inline fun <reified T : Any> Match.subscribe(vararg states: Match.State, priority: Int, noinline notifier: T.() -> Unit) {
-    subscribe(StatefulTypedSubscription(this, states as Array<Match.State>, T::class, notifier, priority))
+inline fun <reified T : Any> Match.subscribe(states: Array<Match.State>, priority: Int, noinline notifier: T.() -> Unit) {
+    subscribe(StatefulTypedSubscription(this, states, T::class, notifier, priority))
 }
 
 /**
