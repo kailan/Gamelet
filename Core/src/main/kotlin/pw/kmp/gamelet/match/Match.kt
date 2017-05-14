@@ -42,6 +42,10 @@ class Match(val id: Int, val world: World, app: Kodein, val map: Maplet) : Subsc
         initializeModules()
     }
 
+    fun cleanup() {
+        ctx.instance<MatchEventDispatcher>().unregister()
+    }
+
     override fun toString() = "Match #$id"
 
     /**
