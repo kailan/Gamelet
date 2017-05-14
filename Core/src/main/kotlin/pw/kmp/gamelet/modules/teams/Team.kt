@@ -43,4 +43,6 @@ open class Team(override val name: String, val match: Match, val min: Int, val m
      */
     fun isFull() = max < 0 && players.size < max
 
+    override fun toString() = name
+
 }
