@@ -40,6 +40,7 @@ class Match(val id: Int, val world: World, app: Kodein, val map: Maplet) : Subsc
 
     init {
         initializeModules()
+        ctx.instance<MatchEventDispatcher>() // initialise event dispatcher
     }
 
     fun cleanup() {

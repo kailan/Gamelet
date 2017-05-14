@@ -6,7 +6,6 @@ import pw.kmp.gamelet.modules.GameletModule
 import pw.kmp.gamelet.modules.players.PlayerModule
 import pw.kmp.gamelet.modules.players.PlayerSpawnEvent
 import pw.kmp.gamelet.util.players
-import pw.kmp.gamelet.util.teams
 
 /**
  * A module for spawning players into the match.
@@ -28,8 +27,8 @@ open class SpawnModule(val match: Match, val players: PlayerModule) {
      */
     fun getSpawn(player: Playerlet): Spawn {
         if (!match.players.hasPlayer(player)) throw IllegalArgumentException("Player is not in match")
-        val team = match.teams[player] ?: return defaultSpawn!!
-        val validSpawns = spawns.filter { it.team == team }
+        val validSpawns = spawns.filter { it.owner == player.participant }
+        if (validSpawns.isEmpty()) return defaultSpawn!!
         return validSpawns[(Math.random() * validSpawns.size).toInt()]
     }
 

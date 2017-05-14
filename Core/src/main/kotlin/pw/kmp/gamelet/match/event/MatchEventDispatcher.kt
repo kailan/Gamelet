@@ -2,15 +2,14 @@ package pw.kmp.gamelet.match.event
 
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
-import org.bukkit.event.EventPriority
+import org.bukkit.event.EventHandler
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityEvent
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.event.world.WorldEvent
-import org.bukkit.plugin.EventExecutor
 import org.bukkit.plugin.Plugin
-import org.bukkit.plugin.RegisteredListener
 import pw.kmp.gamelet.match.Match
 import pw.kmp.gamelet.modules.players.PlayerModule
 import pw.kmp.gamelet.playerlet
@@ -18,8 +17,7 @@ import pw.kmp.gamelet.playerlet
 class MatchEventDispatcher(plugin: Plugin, val match: Match, val players: PlayerModule) : Listener {
 
     init {
-        val listener = RegisteredListener(this, EventExecutor { l, e -> onEvent(e) }, EventPriority.NORMAL, plugin, false)
-        HandlerList.getHandlerLists().forEach { it.register(listener) }
+        plugin.server.pluginManager.registerEvents(this, plugin)
     }
 
     fun unregister() {
@@ -33,5 +31,8 @@ class MatchEventDispatcher(plugin: Plugin, val match: Match, val players: Player
             match.notify(event)
         }
     }
+
+    @EventHandler
+    fun onDeath(event: PlayerDeathEvent) = onEvent(event)
 
 }
