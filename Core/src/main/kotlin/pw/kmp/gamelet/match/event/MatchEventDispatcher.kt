@@ -1,4 +1,4 @@
-package pw.kmp.gamelet.listeners
+package pw.kmp.gamelet.match.event
 
 import org.bukkit.event.Event
 import org.bukkit.event.EventPriority
@@ -12,7 +12,7 @@ import org.bukkit.plugin.RegisteredListener
 import pw.kmp.gamelet.match.Match
 import pw.kmp.gamelet.modules.players.PlayerModule
 
-class MatchEventDispatcher(val plugin: Plugin, val match: Match, val players: PlayerModule) : Listener {
+class MatchEventDispatcher(plugin: Plugin, val match: Match, val players: PlayerModule) : Listener {
 
     init {
         val listener = RegisteredListener(this, EventExecutor { l, e -> onEvent(e) }, EventPriority.NORMAL, plugin, false)

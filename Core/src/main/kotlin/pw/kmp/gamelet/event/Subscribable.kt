@@ -15,22 +15,22 @@ abstract class Subscribable {
     /**
      * Subscribe to notifications using a Subscription object.
      */
-    fun <T> subscribe(subscription: Subscription) {
+    fun subscribe(subscription: Subscription) {
         subscriptions += subscription
     }
 
     /**
      * Subscribe to notifications of a certain type.
      */
-    fun <T : Any> subscribe(type: KClass<T>, notifier: T.() -> Unit) {
-        subscribe(type, 0, notifier)
+    inline fun <reified T : Any> subscribe(noinline notifier: T.() -> Unit) {
+        subscribe(0, notifier)
     }
 
     /**
      * Subscribe to notifications of a certain type, specifying a priority.
      */
-    fun <T : Any> subscribe(type: KClass<T>, priority: Int, notifier: T.() -> Unit) {
-        subscribe<T>(TypedSubscription(type, notifier, priority))
+    inline fun <reified T : Any> subscribe(priority: Int, noinline notifier: T.() -> Unit) {
+        subscribe(TypedSubscription(T::class, notifier, priority))
     }
 
     /**

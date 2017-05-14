@@ -15,7 +15,7 @@ import pw.kmp.gamelet.util.teams
 open class SpawnModule(val match: Match, val players: PlayerModule) {
 
     init {
-        match.subscribe(PlayerSpawnEvent::class) {
+        match.subscribe<PlayerSpawnEvent> {
             location = getSpawn(player).getLocation()
         }
     }

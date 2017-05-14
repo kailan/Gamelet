@@ -1,32 +1,21 @@
 package pw.kmp.gamelet.match.event
 
-import pw.kmp.gamelet.event.Subscribable
 import pw.kmp.gamelet.event.TypedSubscription
 import pw.kmp.gamelet.match.Match
 import kotlin.reflect.KClass
 
 /**
- * Provides state-dependent subscription methods.
+ * Subscribe to notifications of a certain type, when the match is a specified state.
  */
-open class MatchSubscribable : Subscribable() {
+inline fun <reified T : Any> Match.subscribe(vararg states: Match.State, noinline notifier: T.() -> Unit) {
+    subscribe(StatefulTypedSubscription(this, states as Array<Match.State>, T::class, notifier, 0))
+}
 
-    // has to be initialized as it can't be passed into constructor
-    lateinit var match: Match
-
-    /**
-     * Subscribe to notifications of a certain type, when the match is a specified state.
-     */
-    fun <T : Any> subscribe(type: KClass<T>, vararg states: Match.State, notifier: T.() -> Unit) {
-        subscribe<T>(StatefulTypedSubscription(match, states as Array<Match.State>, type, notifier, 0))
-    }
-
-    /**
-     * Subscribe to notifications of a certain type, specifying a priority.
-     */
-    fun <T : Any> subscribe(type: KClass<T>, vararg states: Match.State, priority: Int, notifier: T.() -> Unit) {
-        subscribe<T>(StatefulTypedSubscription(match, states as Array<Match.State>, type, notifier, priority))
-    }
-
+/**
+ * Subscribe to notifications of a certain type, specifying a priority.
+ */
+inline fun <reified T : Any> Match.subscribe(vararg states: Match.State, priority: Int, noinline notifier: T.() -> Unit) {
+    subscribe(StatefulTypedSubscription(this, states as Array<Match.State>, T::class, notifier, priority))
 }
 
 /**

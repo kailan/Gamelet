@@ -13,7 +13,7 @@ open class PlayerModule(val match: Match) {
     val players = mutableSetOf<Player>()
 
     init {
-        match.subscribe(PlayerJoinMatchEvent::class) {
+        match.subscribe<PlayerJoinMatchEvent> {
             val spawn = PlayerSpawnEvent(player)
             match.notify(spawn)
             player.teleport(spawn.location)
@@ -34,8 +34,8 @@ open class PlayerModule(val match: Match) {
      */
     fun removePlayer(player: Player) {
         if (!players.contains(player)) throw IllegalArgumentException("$player can't be removed from a match they are not in.")
-        players -= player
         match.notify(PlayerLeaveMatchEvent(player))
+        players -= player
     }
 
     /**

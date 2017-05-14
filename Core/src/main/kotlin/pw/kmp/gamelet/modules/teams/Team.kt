@@ -26,8 +26,8 @@ open class Team(val name: String, val match: Match, val min: Int, val max: Int) 
      */
     fun removePlayer(player: Player) {
         if (!hasPlayer(player)) throw IllegalArgumentException("$player can't be removed from a team they are not in.")
-        players -= player
         match.notify(PlayerLeaveTeamEvent(player, this))
+        players -= player
     }
 
     /**

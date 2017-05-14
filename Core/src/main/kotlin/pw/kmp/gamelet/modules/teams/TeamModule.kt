@@ -16,10 +16,10 @@ open class TeamModule(val match: Match, val players: PlayerModule) {
     val teams = mutableSetOf<Team>()
 
     init {
-        match.subscribe(PlayerJoinMatchEvent::class, -1) {
+        match.subscribe<PlayerJoinMatchEvent>(-1) {
             teams.filter { !it.isFull() }.sortedBy { it.players.size }.firstOrNull()?.addPlayer(player) // TODO: join commands
         }
-        match.subscribe(PlayerLeaveMatchEvent::class) {
+        match.subscribe<PlayerLeaveMatchEvent> {
             get(player)?.removePlayer(player)
         }
     }

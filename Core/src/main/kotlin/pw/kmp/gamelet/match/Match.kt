@@ -5,10 +5,10 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.bind
 import com.github.salomonbrys.kodein.instance
 import org.bukkit.World
-import pw.kmp.gamelet.listeners.MatchEventDispatcher
+import pw.kmp.gamelet.event.Subscribable
 import pw.kmp.gamelet.map.Maplet
+import pw.kmp.gamelet.match.event.MatchEventDispatcher
 import pw.kmp.gamelet.match.event.MatchStateEvent
-import pw.kmp.gamelet.match.event.MatchSubscribable
 import pw.kmp.gamelet.modules.GameletModule
 import pw.kmp.gamelet.util.logger
 import pw.kmp.kodeinject.injectedSingleton
@@ -18,7 +18,7 @@ import kotlin.properties.Delegates
 /**
  * A match with loaded modules.
  */
-class Match(val id: Int, val world: World, app: Kodein, val map: Maplet) : MatchSubscribable() {
+class Match(val id: Int, val world: World, app: Kodein, val map: Maplet) : Subscribable() {
 
     enum class State { READY, RUNNING, ENDED }
     var state: State by Delegates.observable(State.READY) {
@@ -39,8 +39,6 @@ class Match(val id: Int, val world: World, app: Kodein, val map: Maplet) : Match
     }
 
     init {
-        match = this // set MatchSubscribable.match for event subscriptions
-
         initializeModules()
     }
 
