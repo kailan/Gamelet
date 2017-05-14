@@ -1,6 +1,6 @@
 package pw.kmp.gamelet.modules.teams
 
-import org.bukkit.entity.Player
+import pw.kmp.gamelet.Playerlet
 import pw.kmp.gamelet.match.Match
 import pw.kmp.gamelet.modules.GameletModule
 import pw.kmp.gamelet.modules.players.PlayerJoinMatchEvent
@@ -27,7 +27,7 @@ open class TeamModule(val match: Match, val players: PlayerModule) {
     /**
      * Returns the team that a player is on, if any.
      */
-    operator fun get(player: Player) = teams.find { it.hasPlayer(player) }
+    operator fun get(player: Playerlet) = teams.find { it.hasPlayer(player) }
 
     /**
      * Returns a team by name.

@@ -1,6 +1,6 @@
 package pw.kmp.gamelet.modules.spawns
 
-import org.bukkit.entity.Player
+import pw.kmp.gamelet.Playerlet
 import pw.kmp.gamelet.match.Match
 import pw.kmp.gamelet.modules.GameletModule
 import pw.kmp.gamelet.modules.players.PlayerModule
@@ -26,7 +26,7 @@ open class SpawnModule(val match: Match, val players: PlayerModule) {
     /**
      * Gets a spawn suitable for the given player.
      */
-    fun getSpawn(player: Player): Spawn {
+    fun getSpawn(player: Playerlet): Spawn {
         if (!match.players.hasPlayer(player)) throw IllegalArgumentException("Player is not in match")
         val team = match.teams[player] ?: return defaultSpawn!!
         val validSpawns = spawns.filter { it.team == team }

@@ -5,7 +5,9 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.plugin.Plugin
+import pw.kmp.gamelet.Playerlet
 import pw.kmp.gamelet.match.MatchManager
+import pw.kmp.gamelet.playerlet
 import pw.kmp.gamelet.util.players
 
 /**
@@ -19,7 +21,7 @@ class ConnectionListener(val matches: MatchManager, val plugin: Plugin) : Listen
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         val match = matches.findMatch() ?: return // do nothing if there are no matches
-        match.players.addPlayer(event.player)
+        match.players.addPlayer(event.player.playerlet)
     }
 
     /**
@@ -28,7 +30,8 @@ class ConnectionListener(val matches: MatchManager, val plugin: Plugin) : Listen
     @EventHandler
     fun onLeave(event: PlayerQuitEvent) {
         matches.getMatches().map { it.players }.filter { it.players.contains(event.player) }
-                .firstOrNull()?.removePlayer(event.player)
+                .firstOrNull()?.removePlayer(event.player.playerlet)
+        Playerlet.players.remove(event.player.playerlet)
     }
 
 }
