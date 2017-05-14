@@ -23,6 +23,8 @@ class Playerlet(val bukkit: Player) : Player by bukkit {
     var match: Match? = null
     var participant: Participant? = null
 
+    override fun toString(): String = name
+
 }
 
 val Player.playerlet: Playerlet

@@ -16,7 +16,7 @@ open class PlayerModule(val match: Match) {
         match.subscribe<PlayerJoinMatchEvent> {
             val spawn = PlayerSpawnEvent(player)
             match.notify(spawn)
-            player.teleport(spawn.location)
+            player.teleport(spawn.location ?: match.world.spawnLocation)
         }
     }
 

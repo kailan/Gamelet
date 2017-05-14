@@ -1,6 +1,7 @@
 package pw.kmp.gamelet.listeners
 
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
@@ -27,11 +28,13 @@ class ConnectionListener(val matches: MatchManager, val plugin: Plugin) : Listen
     /**
      * Called when a player leaves the server.
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     fun onLeave(event: PlayerQuitEvent) {
-        matches.getMatches().map { it.players }.filter { it.players.contains(event.player) }
-                .firstOrNull()?.removePlayer(event.player.playerlet)
-        Playerlet.players.remove(event.player.playerlet)
+        val player = event.player.playerlet
+        matches.getMatches().map { it.players }.filter { it.hasPlayer(player) }
+                .firstOrNull()?.removePlayer(player)
+
+        Playerlet.players.remove(player)
     }
 
 }
