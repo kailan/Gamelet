@@ -6,13 +6,12 @@ import pw.kmp.gamelet.match.event.subscribe
 import pw.kmp.gamelet.modules.GameletModule
 import pw.kmp.gamelet.modules.players.PlayerModule
 import pw.kmp.gamelet.modules.players.PlayerSpawnEvent
-import pw.kmp.gamelet.util.players
 
 /**
  * A module for spawning players into the match.
  */
 @GameletModule
-open class SpawnModule(val match: Match, val players: PlayerModule) {
+abstract class SpawnModule(val match: Match, val players: PlayerModule) {
 
     init {
         match.subscribe<PlayerSpawnEvent>(arrayOf(Match.State.RUNNING)) {
@@ -23,17 +22,11 @@ open class SpawnModule(val match: Match, val players: PlayerModule) {
         }
     }
 
-    val spawns = mutableSetOf<Spawn>()
     var defaultSpawn: Spawn? = null
 
     /**
      * Gets a spawn suitable for the given player.
      */
-    fun getSpawn(player: Playerlet): Spawn {
-        if (!match.players.hasPlayer(player)) throw IllegalArgumentException("Player is not in match")
-        val validSpawns = spawns.filter { it.owner == player.participant }
-        if (validSpawns.isEmpty()) return defaultSpawn!!
-        return validSpawns[(Math.random() * validSpawns.size).toInt()]
-    }
+    abstract fun getSpawn(player: Playerlet): Spawn
 
 }

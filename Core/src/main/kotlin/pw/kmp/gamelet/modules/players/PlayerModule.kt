@@ -1,5 +1,6 @@
 package pw.kmp.gamelet.modules.players
 
+import org.bukkit.plugin.Plugin
 import pw.kmp.gamelet.Playerlet
 import pw.kmp.gamelet.match.Match
 import pw.kmp.gamelet.modules.GameletModule
@@ -8,15 +9,17 @@ import pw.kmp.gamelet.modules.GameletModule
  * Manages players within a match.
  */
 @GameletModule
-open class PlayerModule(val match: Match) {
+open class PlayerModule(val match: Match, plugin: Plugin) {
 
     val players = mutableSetOf<Playerlet>()
 
     init {
         match.subscribe<PlayerJoinMatchEvent> {
-            val spawn = PlayerSpawnEvent(player)
-            match.notify(spawn)
-            player.teleport(spawn.location ?: match.world.spawnLocation)
+            plugin.server.scheduler.runTaskLater(plugin, {
+                val spawn = PlayerSpawnEvent(player)
+                match.notify(spawn)
+                player.teleport(spawn.location ?: match.world.spawnLocation)
+            }, 1)
         }
     }
 
