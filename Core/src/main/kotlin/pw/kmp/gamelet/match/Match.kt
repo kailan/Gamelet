@@ -7,6 +7,7 @@ import com.github.salomonbrys.kodein.instance
 import org.bukkit.World
 import pw.kmp.gamelet.event.Subscribable
 import pw.kmp.gamelet.map.Maplet
+import pw.kmp.gamelet.match.countdown.CountdownManager
 import pw.kmp.gamelet.match.event.MatchEventDispatcher
 import pw.kmp.gamelet.match.event.MatchStateEvent
 import pw.kmp.gamelet.modules.GameletModule
@@ -37,6 +38,7 @@ class Match(val id: Int, val world: World, app: Kodein, val map: Maplet) : Subsc
         bind<Maplet>() with instance(map)
         bind<World>() with instance(world)
 
+        bind() from injectedSingleton<CountdownManager>()
         bind() from injectedSingleton<MatchEventDispatcher>()
     }
 

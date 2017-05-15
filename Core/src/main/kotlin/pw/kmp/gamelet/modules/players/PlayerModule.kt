@@ -45,4 +45,9 @@ open class PlayerModule(val match: Match) {
      */
     fun hasPlayer(player: Playerlet) = players.contains(player)
 
+    /**
+     * Returns the amount of players in the match.
+     */
+    fun count() = players.size
+
 }
