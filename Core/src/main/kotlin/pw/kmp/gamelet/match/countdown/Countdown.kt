@@ -1,77 +1,73 @@
 package pw.kmp.gamelet.match.countdown
 
+import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitRunnable
+import pw.kmp.gamelet.event.Subscribable
 
 /**
  * A single countdown.
  */
-abstract class Countdown : BukkitRunnable() {
+class Countdown(val plugin: Plugin) : Subscribable() {
 
-    var manager: CountdownManager? = null
     var time: Int = -1
-    var ended = false
+    var isRunning = false
 
-    /**
-     * Starts the countdown at the specified time.
-     *
-     * @param manager the countdown manager
-     * @param time the start time
-     */
-    fun start(manager: CountdownManager, time: Int) {
-        if (this.manager != null) throw IllegalStateException("Countdown cannot be started more than once.")
-        if (time < 1) throw IllegalArgumentException("Countdown must have a positive start time.")
-
-        this.manager = manager
-        this.time = time
-        manager.liveCountdowns += this
-        runTaskTimer(manager.plugin, 0, 20)
-    }
-
-    private fun cleanup() {
-        ended = true
-        super.cancel()
-        manager!!.liveCountdowns -= this
-    }
-
-    /**
-     * Cancels the countdown prematurely.
-     */
-    override fun cancel() {
-        if (ended) return
-        onCancel()
-        cleanup()
-    }
-
-    override fun run() {
-        if (time == 0) {
-            onFinish()
-            cleanup()
-        } else {
-            onTick()
-            time--
+    val runnable = object : BukkitRunnable() {
+        override fun run() {
+            if (time == 0) {
+                cleanup()
+                notify(End(false))
+            } else {
+                notify(Tick(time--))
+            }
         }
     }
 
     /**
-     * Called when the countdown starts.
-     */
-    abstract fun onStart()
-
-    /**
-     * Called when the countdown ticks, every second.
+     * Start the countdown at the specified time.
      *
-     * @param timeLeft the amount of time left
+     * @param time the amount of time to run for
      */
-    abstract fun onTick()
+    fun start(time: Int) {
+        if (time < 1) throw IllegalArgumentException("Countdown must have a positive start time.")
+
+        this.time = time
+        isRunning = true
+        runnable.runTaskTimer(plugin, 0, 20)
+        notify(Start(time))
+    }
+
+    private fun cleanup() {
+        isRunning = false
+        runnable.cancel()
+    }
 
     /**
-     * Called when the countdown finishes.
+     * Cancel the countdown prematurely.
      */
-    abstract fun onFinish()
+    fun cancel() {
+        if (!isRunning) return
+        cleanup()
+        notify(End(true))
+    }
+
+    class Tick(val time: Int)
+    class Start(val time: Int)
+    class End(val cancelled: Boolean)
 
     /**
-     * Called when the countdown is cancelled prematurely.
+     * Register a tick listener.
      */
-    abstract fun onCancel()
+    fun onTick(callback: Tick.() -> Unit) = subscribe(callback)
+
+    /**
+     * Register a countdown start listener.
+     */
+    fun onStart(callback: Start.() -> Unit) = subscribe(callback)
+
+    /**
+     * Register a countdown end listener.
+     */
+    fun onEnd(callback: End.() -> Unit) = subscribe(callback)
 
 }
