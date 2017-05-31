@@ -8,6 +8,7 @@ import pw.kmp.gamelet.bedwars.teams.BWTeam
 import pw.kmp.gamelet.bedwars.teams.BWTeamModule
 import pw.kmp.gamelet.match.Match
 import pw.kmp.gamelet.modules.GameletModule
+import pw.kmp.gamelet.modules.teams.PlayerLeaveTeamEvent
 import pw.kmp.gamelet.playerlet
 
 @GameletModule
@@ -21,8 +22,10 @@ class BedModule(match: Match, teams: BWTeamModule) {
             if (!team.isBedAlive) {
                 team.removePlayer(player)
                 deathMessage += " ${ChatColor.RED}${ChatColor.BOLD}ELIMINATED"
-                if (team.players.size < 1) match.notify(TeamEliminationEvent(team))
             }
+        }
+        match.subscribe<PlayerLeaveTeamEvent> {
+            if (team.players.size < 1) match.notify(TeamEliminationEvent(team as BWTeam))
         }
         match.subscribe<BlockBreakEvent> {
             teams.teams.find { it.isBed(block) }?.let {
