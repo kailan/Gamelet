@@ -39,7 +39,7 @@ class BWSpawnModule(match: Match, players: PlayerModule, teams: BWTeamModule, wo
                 player.reset()
                 location = teams[player]?.bed?.getRandom()?.toLocation(world)?.add(0.toDouble(), 1.toDouble(), 0.toDouble())
                 // TODO: NUKE
-                player.inventory.addItem(ItemStack(Material.STONE, 1))
+                player.inventory.addItem(ItemStack(Material.STONE_SWORD, 1))
                 player.inventory.addItem(ItemStack(Material.WOOD_PICKAXE, 1))
                 player.inventory.chestplate = ItemStack(Material.LEATHER_CHESTPLATE, 1)
                 player.inventory.addItem(ItemStack(Material.BOW, 1))
