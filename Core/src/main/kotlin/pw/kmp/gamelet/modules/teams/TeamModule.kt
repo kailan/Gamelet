@@ -4,15 +4,12 @@ import pw.kmp.gamelet.Playerlet
 import pw.kmp.gamelet.match.Match
 import pw.kmp.gamelet.modules.GameletModule
 import pw.kmp.gamelet.modules.players.PlayerLeaveMatchEvent
-import pw.kmp.gamelet.modules.players.PlayerModule
 
 /**
  * Manages teams within a match.
  */
 @GameletModule
-open class TeamModule(val match: Match, val players: PlayerModule) {
-
-    val teams = mutableSetOf<Team>()
+abstract class TeamModule(val match: Match) {
 
     init {
         match.subscribe<PlayerLeaveMatchEvent> {
@@ -23,11 +20,6 @@ open class TeamModule(val match: Match, val players: PlayerModule) {
     /**
      * Returns the team that a player is on, if any.
      */
-    open operator fun get(player: Playerlet) = teams.find { it.hasPlayer(player) }
-
-    /**
-     * Returns a team by name.
-     */
-    open operator fun get(name: String) = teams.find { it.name == name }
+    abstract operator fun get(player: Playerlet): Team?
 
 }

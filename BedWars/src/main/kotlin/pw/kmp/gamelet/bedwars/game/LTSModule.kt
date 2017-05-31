@@ -19,7 +19,7 @@ class LTSModule(match: Match, val teams: BWTeamModule) : ObjectiveModule {
         }
     }
 
-    fun getLiveTeams() = teams.getBWTeams().filter { it.players.size > 0 }.toSet()
+    fun getLiveTeams() = teams.teams.filter { it.players.size > 0 }.toSet()
 
     override fun getWinner(): Participant? {
         val alive = getLiveTeams()

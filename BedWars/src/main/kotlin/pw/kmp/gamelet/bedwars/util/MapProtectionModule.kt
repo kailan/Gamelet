@@ -17,7 +17,7 @@ class MapProtectionModule(match: Match, teams: BWTeamModule) {
         }
         match.subscribe<BlockBreakEvent> {
             if (match.state != Match.State.RUNNING ||
-                    (!placed.contains(block.location) && !teams.getBWTeams().any { it.isBed(block) })) {
+                    (!placed.contains(block.location) && !teams.teams.any { it.isBed(block) })) {
                 isCancelled = true
             }
         }

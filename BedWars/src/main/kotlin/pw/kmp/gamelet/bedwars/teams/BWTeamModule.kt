@@ -3,8 +3,8 @@ package pw.kmp.gamelet.bedwars.teams
 import org.bukkit.ChatColor
 import pw.kmp.gamelet.Playerlet
 import pw.kmp.gamelet.bedwars.util.toVector3D
-import pw.kmp.gamelet.match.event.subscribe
 import pw.kmp.gamelet.match.Match
+import pw.kmp.gamelet.match.event.subscribe
 import pw.kmp.gamelet.modules.GameletModule
 import pw.kmp.gamelet.modules.players.PlayerJoinMatchEvent
 import pw.kmp.gamelet.modules.players.PlayerModule
@@ -13,7 +13,9 @@ import pw.kmp.gamelet.regions.CuboidRegion
 import pw.kmp.kext.Element
 
 @GameletModule
-class BWTeamModule(config: Element, match: Match, players: PlayerModule) : TeamModule(match, players) {
+class BWTeamModule(config: Element, match: Match, players: PlayerModule) : TeamModule(match) {
+
+    val teams = mutableSetOf<BWTeam>()
 
     init {
         config.require.child("teams").children().forEach {
@@ -30,8 +32,6 @@ class BWTeamModule(config: Element, match: Match, players: PlayerModule) : TeamM
         }
     }
 
-    fun getBWTeams() = teams.map { it as BWTeam }.toSet()
-    override fun get(name: String) = super.get(name) as? BWTeam
-    override fun get(player: Playerlet) = super.get(player) as? BWTeam
+    override fun get(player: Playerlet) = teams.find { it.hasPlayer(player) }
 
 }

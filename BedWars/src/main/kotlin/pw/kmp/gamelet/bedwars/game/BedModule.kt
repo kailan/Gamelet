@@ -25,7 +25,7 @@ class BedModule(match: Match, teams: BWTeamModule) {
             }
         }
         match.subscribe<BlockBreakEvent> {
-            teams.getBWTeams().find { it.isBed(block) }?.let {
+            teams.teams.find { it.isBed(block) }?.let {
                 val player = player.playerlet
                 if (!it.hasPlayer(player)) {
                     it.isBedAlive = false
