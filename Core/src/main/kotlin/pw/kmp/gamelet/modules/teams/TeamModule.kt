@@ -23,11 +23,11 @@ open class TeamModule(val match: Match, val players: PlayerModule) {
     /**
      * Returns the team that a player is on, if any.
      */
-    operator fun get(player: Playerlet) = teams.find { it.hasPlayer(player) }
+    open operator fun get(player: Playerlet) = teams.find { it.hasPlayer(player) }
 
     /**
      * Returns a team by name.
      */
-    operator fun get(name: String) = teams.find { it.name == name }
+    open operator fun get(name: String) = teams.find { it.name == name }
 
 }

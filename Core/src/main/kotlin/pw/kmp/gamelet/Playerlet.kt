@@ -1,5 +1,6 @@
 package pw.kmp.gamelet
 
+import org.bukkit.GameMode
 import org.bukkit.entity.Player
 import pw.kmp.gamelet.match.Match
 import pw.kmp.gamelet.match.participant.Participant
@@ -22,6 +23,27 @@ class Playerlet(val bukkit: Player) : Player by bukkit {
 
     var match: Match? = null
     var participant: Participant? = null
+
+    /**
+     * Resets player attributes such as inventory and gamemode.
+     */
+    fun reset(gamemode: GameMode = GameMode.SURVIVAL) {
+        // gamemode
+        gameMode = gamemode
+
+        // inventory
+        inventory.clear()
+        updateInventory()
+
+        // health
+        health = maxHealth
+        saturation = 20.toFloat()
+        fallDistance = 0.toFloat()
+        exhaustion = 0.toFloat()
+
+        // effects
+        activePotionEffects.forEach { removePotionEffect(it.type) }
+    }
 
     override fun toString(): String = name
 

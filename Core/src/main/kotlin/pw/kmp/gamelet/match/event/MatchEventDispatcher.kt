@@ -5,9 +5,14 @@ import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
+import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockEvent
+import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerEvent
+import org.bukkit.event.player.PlayerMoveEvent
+import org.bukkit.event.player.PlayerRespawnEvent
 import org.bukkit.event.world.WorldEvent
 import org.bukkit.plugin.Plugin
 import pw.kmp.gamelet.match.Match
@@ -32,7 +37,23 @@ class MatchEventDispatcher(plugin: Plugin, val match: Match, val players: Player
         }
     }
 
+    fun onBlockEvent(event: BlockEvent) {
+        if (event.block.world == match.world) match.notify(event)
+    }
+
     @EventHandler
     fun onDeath(event: PlayerDeathEvent) = onEvent(event)
+
+    @EventHandler
+    fun onPlace(event: BlockPlaceEvent) = onBlockEvent(event)
+
+    @EventHandler
+    fun onBreak(event: BlockBreakEvent) = onBlockEvent(event)
+
+    @EventHandler
+    fun onRespawn(event: PlayerRespawnEvent) = onEvent(event)
+
+    @EventHandler
+    fun onMove(event: PlayerMoveEvent) = onEvent(event)
 
 }
