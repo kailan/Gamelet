@@ -1,5 +1,6 @@
 package pw.kmp.gamelet.bedwars.ux
 
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import pw.kmp.gamelet.match.Match
@@ -18,8 +19,8 @@ class Messages {
     }
 
     enum class Game(vararg val msg: String) {
-        STARTED("\n\n\n\n\n", "${ChatColor.GOLD}The game has begun!"),
-        FINISHED("\n\n\n\n\n", "${ChatColor.GOLD}The game is over!"),
+        STARTED("\n \n \n \n \n ", "${ChatColor.GOLD}The game has begun!"),
+        FINISHED("\n \n \n \n \n ", "${ChatColor.GOLD}The game is over!"),
         FINISHED_WINNER("\n", "${ChatColor.GOLD}Congratulations to the {0}${ChatColor.GOLD} Team!");
     }
 
@@ -61,6 +62,8 @@ fun Team.sendMessages(messages: Array<out String>, vararg values: String) {
 }
 
 fun String.replacePlaceholders(values: Array<out String>) : String {
-    for ((i, value) in values.withIndex()) this.replace("{$i}", value)
-    return this
+    var final: String = this
+    for ((i, value) in values.withIndex()) final = final.replace("{$i}", value)
+
+    return final
 }
