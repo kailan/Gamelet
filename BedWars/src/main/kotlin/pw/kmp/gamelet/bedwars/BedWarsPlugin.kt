@@ -22,13 +22,18 @@ class BedWarsPlugin : JavaPlugin() {
 
     // TODO: remove
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
-        if (command.name == "state") {
-            if (args.isEmpty()) return false
+        if (command.name == "debug") {
             if (sender !is Player) return false
+            val match = sender.playerlet.match ?: return false
 
-            val player = sender.playerlet
-            if (player.match == null) return false
-            player.match!!.state = Match.State.valueOf(args[0].toUpperCase())
+            if (!args.isEmpty()) {
+                match.state = Match.State.valueOf(args[0].toUpperCase())
+            } else {
+                sender.sendMessage("$match:")
+                sender.sendMessage(" state: ${match.state}")
+                sender.sendMessage(" registered bindings: ${match.ctx.container.bindings.size}")
+                sender.sendMessage(" subscriptions: ${match.subscriptions.size}")
+            }
         }
         return true
     }
