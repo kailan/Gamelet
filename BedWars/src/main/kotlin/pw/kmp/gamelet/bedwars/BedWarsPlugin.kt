@@ -27,7 +27,11 @@ class BedWarsPlugin : JavaPlugin() {
             val match = sender.playerlet.match ?: return false
 
             if (!args.isEmpty()) {
-                match.state = Match.State.valueOf(args[0].toUpperCase())
+                try {
+                    match.state = Match.State.valueOf(args[0].toUpperCase())
+                } catch (ex: Exception) {
+                    sender.sendMessage("Unable to update state: ${ex.message}")
+                }
             } else {
                 sender.sendMessage("$match:")
                 sender.sendMessage(" state: ${match.state}")
