@@ -28,7 +28,7 @@ class BedModule(match: Match, teams: BWTeamModule) {
             if (team.players.size < 1) match.notify(TeamEliminationEvent(team as BWTeam))
         }
         match.subscribe<BlockBreakEvent> {
-            teams.teams.find { it.isBed(block) }?.let {
+            teams.teams.find { it.isBed(block) && it.isBedAlive }?.let {
                 val player = player.playerlet
                 if (!it.hasPlayer(player)) {
                     it.isBedAlive = false
