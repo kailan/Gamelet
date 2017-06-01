@@ -15,20 +15,20 @@ class MessageModule(match: Match, objective: ObjectiveModule) {
     init {
         match.subscribe<MatchStateEvent> {
             if (state == Match.State.RUNNING) {
-                match.broadcast("${ChatColor.GOLD}The game has begun!")
+                match.broadcastMessages(Messages.Game.STARTED.msg)
             } else if (state == Match.State.ENDED) {
-                match.broadcast("${ChatColor.GOLD}The game is over!")
-                objective.getWinner()?.let { match.broadcast("$it wins.") }
+                match.broadcastMessages(Messages.Game.FINISHED.msg)
+                objective.getWinner()?.let { match.broadcastMessages(Messages.Game.FINISHED_WINNER.msg, it.toString()) }
             }
         }
         match.subscribe<BedBreakEvent> {
-            match.broadcast("$team's${ChatColor.GOLD} bed has been broken by ${ChatColor.GRAY}$breaker${ChatColor.GOLD}!")
+            match.broadcastMessages(Messages.Bed.BROKEN.msg, team.toString(), breaker.toString())
         }
         match.subscribe<TeamEliminationEvent> {
-            match.broadcast("$team ${ChatColor.GOLD}has been eliminated!")
+            match.broadcastMessages(Messages.Team.ELIMINATED.msg, team.toString())
         }
         match.subscribe<PlayerJoinTeamEvent> {
-            match.broadcast("${ChatColor.GRAY}$player${ChatColor.GOLD} joined the $team${ChatColor.GOLD}.")
+            team.sendMessages(Messages.Team.JOIN.msg, player.displayName)
         }
     }
 

@@ -6,6 +6,8 @@ import org.bukkit.event.entity.PlayerDeathEvent
 import pw.kmp.gamelet.Playerlet
 import pw.kmp.gamelet.bedwars.teams.BWTeam
 import pw.kmp.gamelet.bedwars.teams.BWTeamModule
+import pw.kmp.gamelet.bedwars.ux.Messages
+import pw.kmp.gamelet.bedwars.ux.sendMessages
 import pw.kmp.gamelet.match.Match
 import pw.kmp.gamelet.modules.GameletModule
 import pw.kmp.gamelet.modules.teams.PlayerLeaveTeamEvent
@@ -21,7 +23,7 @@ class BedModule(match: Match, teams: BWTeamModule) {
 
             if (!team.isBedAlive) {
                 team.removePlayer(player)
-                deathMessage += " ${ChatColor.RED}${ChatColor.BOLD}ELIMINATED"
+                deathMessage += Messages.Player.DEATH_MESSAGE_ELIMINATED.msg
             }
         }
         match.subscribe<PlayerLeaveTeamEvent> {
@@ -35,7 +37,7 @@ class BedModule(match: Match, teams: BWTeamModule) {
                     match.notify(BedBreakEvent(it, player))
                     block.drops.clear()
                 } else {
-                    player.sendMessage("${ChatColor.RED}why would you even want to break your own bed")
+                    player.sendMessages(Messages.Bed.BREAK_OWN.msg)
                     isCancelled = true
                 }
             }
