@@ -32,6 +32,11 @@ class BWTeamModule(config: Element, match: Match, players: PlayerModule) : TeamM
         }
     }
 
+    operator fun get(name: String): BWTeam? {
+        val formatted = name.toUpperCase().replace(' ', '_')
+        return teams.find { it.color.name == formatted }
+    }
+
     override fun get(player: Playerlet) = teams.find { it.hasPlayer(player) }
 
 }

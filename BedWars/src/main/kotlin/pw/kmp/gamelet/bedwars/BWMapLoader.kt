@@ -6,6 +6,7 @@ import com.github.salomonbrys.kodein.instance
 import pw.kmp.gamelet.bedwars.game.BWSpawnModule
 import pw.kmp.gamelet.bedwars.game.BedModule
 import pw.kmp.gamelet.bedwars.game.LTSModule
+import pw.kmp.gamelet.bedwars.generators.GeneratorModule
 import pw.kmp.gamelet.bedwars.lobby.GameStartModule
 import pw.kmp.gamelet.bedwars.teams.BWTeamModule
 import pw.kmp.gamelet.bedwars.util.BoundaryModule
@@ -56,6 +57,8 @@ class BWMapLoader(val location: File) : MapLoader {
         bind() from injectedSingleton<BedModule>()
         bind() from injectedSingleton<BWSpawnModule>()
         bind<ObjectiveModule>() with injectedSingleton<LTSModule>()
+
+        bind() from injectedSingleton<GeneratorModule>()
 
         bind() from injectedSingleton<GameStartModule>()
     }
