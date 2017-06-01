@@ -3,6 +3,7 @@ package pw.kmp.gamelet.bedwars.lobby
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.plugin.Plugin
+import pw.kmp.gamelet.bedwars.teams.BWTeamModule
 import pw.kmp.gamelet.match.Match
 import pw.kmp.gamelet.match.countdown.Countdown
 import pw.kmp.gamelet.match.event.MatchStateEvent
@@ -12,7 +13,7 @@ import pw.kmp.gamelet.modules.players.PlayerJoinMatchEvent
 import pw.kmp.gamelet.modules.players.PlayerModule
 
 @GameletModule
-class GameStartModule(match: Match, players: PlayerModule, plugin: Plugin) {
+class GameStartModule(match: Match, players: PlayerModule, teams: BWTeamModule, plugin: Plugin) {
 
     val countdown = Countdown(plugin)
 
@@ -30,7 +31,7 @@ class GameStartModule(match: Match, players: PlayerModule, plugin: Plugin) {
         }
 
         match.subscribe<PlayerJoinMatchEvent>(arrayOf(Match.State.READY)) {
-            if (players.count() > 2 && !countdown.isRunning) {
+            if (players.count() >= teams.teams.size && !countdown.isRunning) {
                 countdown.start(15)
             }
         }
