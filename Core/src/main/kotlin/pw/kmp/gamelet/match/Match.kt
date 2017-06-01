@@ -4,9 +4,11 @@ import com.github.salomonbrys.kodein.JVMTypeToken
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.bind
 import com.github.salomonbrys.kodein.instance
+import org.bukkit.ChatColor
 import org.bukkit.World
 import pw.kmp.gamelet.event.Subscribable
 import pw.kmp.gamelet.map.Maplet
+import pw.kmp.gamelet.match.event.MatchBroadcast
 import pw.kmp.gamelet.match.event.MatchEventDispatcher
 import pw.kmp.gamelet.modules.GameletModule
 import pw.kmp.gamelet.util.logger
@@ -42,6 +44,14 @@ class Match(val id: Int, val world: World, app: Kodein, val map: Maplet) : Subsc
     fun cleanup() {
         state = State.ENDED
         ctx.instance<MatchEventDispatcher>().unregister()
+    }
+
+    /**
+     * Broadcast a message to the match.
+     */
+    fun broadcast(message: String) {
+        notify(MatchBroadcast(message))
+        logger.info(ChatColor.stripColor(message))
     }
 
     override fun toString() = "Match #$id"

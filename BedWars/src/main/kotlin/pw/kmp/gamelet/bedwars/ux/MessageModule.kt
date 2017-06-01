@@ -1,6 +1,5 @@
 package pw.kmp.gamelet.bedwars.ux
 
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import pw.kmp.gamelet.bedwars.game.BedBreakEvent
 import pw.kmp.gamelet.bedwars.game.TeamEliminationEvent
@@ -16,20 +15,20 @@ class MessageModule(match: Match, objective: ObjectiveModule) {
     init {
         match.subscribe<MatchStateEvent> {
             if (state == Match.State.RUNNING) {
-                Bukkit.broadcastMessage("${ChatColor.GOLD}The game has begun!")
+                match.broadcast("${ChatColor.GOLD}The game has begun!")
             } else if (state == Match.State.ENDED) {
-                Bukkit.broadcastMessage("${ChatColor.GOLD}The game is over!")
-                objective.getWinner()?.let { Bukkit.broadcastMessage("$it wins.") }
+                match.broadcast("${ChatColor.GOLD}The game is over!")
+                objective.getWinner()?.let { match.broadcast("$it wins.") }
             }
         }
         match.subscribe<BedBreakEvent> {
-            Bukkit.broadcastMessage("$team's${ChatColor.GOLD} bed has been broken by ${ChatColor.GRAY}$breaker${ChatColor.GOLD}!")
+            match.broadcast("$team's${ChatColor.GOLD} bed has been broken by ${ChatColor.GRAY}$breaker${ChatColor.GOLD}!")
         }
         match.subscribe<TeamEliminationEvent> {
-            Bukkit.broadcastMessage("$team ${ChatColor.GOLD}has been eliminated!")
+            match.broadcast("$team ${ChatColor.GOLD}has been eliminated!")
         }
         match.subscribe<PlayerJoinTeamEvent> {
-            Bukkit.broadcastMessage("${ChatColor.GRAY}$player${ChatColor.GOLD} joined the $team${ChatColor.GOLD}.")
+            match.broadcast("${ChatColor.GRAY}$player${ChatColor.GOLD} joined the $team${ChatColor.GOLD}.")
         }
     }
 

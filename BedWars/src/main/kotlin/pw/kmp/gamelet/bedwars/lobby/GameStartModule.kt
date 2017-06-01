@@ -1,6 +1,5 @@
 package pw.kmp.gamelet.bedwars.lobby
 
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.plugin.Plugin
 import pw.kmp.gamelet.bedwars.teams.BWTeamModule
@@ -26,7 +25,7 @@ class GameStartModule(match: Match, players: PlayerModule, teams: BWTeamModule, 
         countdown.onTick {
             if (time % 5 == 0 || time <= 5) {
                 val suffix = if (time == 1) "" else "s"
-                Bukkit.broadcastMessage("${ChatColor.YELLOW}The game starts in ${ChatColor.RED}$time ${ChatColor.YELLOW}second$suffix.")
+                match.broadcast("${ChatColor.YELLOW}The game starts in ${ChatColor.RED}$time ${ChatColor.YELLOW}second$suffix.")
             }
         }
 

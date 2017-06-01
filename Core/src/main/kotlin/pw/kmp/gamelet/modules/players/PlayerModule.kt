@@ -3,6 +3,7 @@ package pw.kmp.gamelet.modules.players
 import org.bukkit.plugin.Plugin
 import pw.kmp.gamelet.Playerlet
 import pw.kmp.gamelet.match.Match
+import pw.kmp.gamelet.match.event.MatchBroadcast
 import pw.kmp.gamelet.modules.GameletModule
 
 /**
@@ -20,6 +21,9 @@ open class PlayerModule(val match: Match, plugin: Plugin) {
                 match.notify(spawn)
                 player.teleport(spawn.location ?: match.world.spawnLocation)
             }, 1)
+        }
+        match.subscribe<MatchBroadcast> {
+            players.forEach { it.sendMessage(message) }
         }
     }
 
