@@ -26,7 +26,7 @@ class BWTeamModule(config: Element, match: Match, players: PlayerModule) : TeamM
             val max = it.require.attribute("max").toInt()
             teams += BWTeam(color, bedRegion, match, max)
         }
-        match.subscribe<PlayerJoinMatchEvent>(arrayOf(Match.State.READY)) {
+        match.subscribe<PlayerJoinMatchEvent>(Match.State.READY) {
             val team = teams.sortedBy { it.players.size }.first()
             team.addPlayer(player)
         }

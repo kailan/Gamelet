@@ -29,7 +29,7 @@ class GameStartModule(match: Match, players: PlayerModule, teams: BWTeamModule, 
             }
         }
 
-        match.subscribe<PlayerJoinMatchEvent>(arrayOf(Match.State.READY)) {
+        match.subscribe<PlayerJoinMatchEvent>(Match.State.READY) {
             if (players.count() >= teams.teams.size && !countdown.isRunning) {
                 countdown.start(15)
             }

@@ -12,7 +12,7 @@ import pw.kmp.gamelet.modules.objective.ObjectiveModule
 class LTSModule(match: Match, val teams: BWTeamModule) : ObjectiveModule {
 
     init {
-        match.subscribe<PlayerDeathEvent>(arrayOf(Match.State.RUNNING), 1) {
+        match.subscribe<PlayerDeathEvent>(1, Match.State.RUNNING) {
             if (getLiveTeams().size < 2) {
                 match.state = Match.State.ENDED
             }
