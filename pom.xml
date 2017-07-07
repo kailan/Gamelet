@@ -11,8 +11,6 @@
     <modules>
         <module>Core</module>
         <module>Kext</module>
-        <module>BedWars</module>
-        <!--<module>PGM</module>-->
     </modules>
 
     <name>Gamelet Parent</name>

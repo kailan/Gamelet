@@ -1,8 +1,0 @@
-name: ${project.name}
-description: ${project.description}
-version: ${project.version}
-main: ${plugin.main}
-depend: [Gamelet]
-commands:
-  debug:
-    description: Show information or change the state of the match
