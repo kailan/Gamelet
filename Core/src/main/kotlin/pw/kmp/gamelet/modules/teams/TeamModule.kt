@@ -9,7 +9,7 @@ import pw.kmp.gamelet.modules.players.PlayerLeaveMatchEvent
  * Manages teams within a match.
  */
 @GameletModule
-abstract class TeamModule(val match: Match) {
+abstract class TeamModule<T : Team>(val match: Match, val teams: MutableSet<T>) : MutableSet<T> by teams {
 
     init {
         match.subscribe<PlayerLeaveMatchEvent> {
